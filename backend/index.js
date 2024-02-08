@@ -21,6 +21,16 @@ app.get("/books", function (req, res) {
   })
 })
 
+app.post("/books", (req, res) => {
+  const q = "INSERT INTO books (`title`,`desc`,`cover`) VALUES (?)";
+  const values = ["title from backend", "desc from backend", "coverbackend.png"];
+
+  db.query(q, [values], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  })
+}) 
+
 app.listen(3000, () => {
   console.log("Listening to localhost 3000...");
 })
