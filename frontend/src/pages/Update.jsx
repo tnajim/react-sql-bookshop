@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 
@@ -13,6 +13,19 @@ const Update = () => {
 
   let { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/books/${id}`);
+        setBook(response.data);
+      } catch (err) {
+        console.error("Error fetching book:", err);
+      }
+    };
+
+    fetchBook();
+  }, [id]);
 
   const handleChange = (e) => {
     setBook((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -31,10 +44,10 @@ const Update = () => {
   return (
     <div className="form">
       <h1>Update Book</h1>
-      <input type="text" placeholder="title" onChange={handleChange} name="title" />
-      <input type="text" placeholder="desc" onChange={handleChange} name="desc" />
-      <input type="number" placeholder="price" onChange={handleChange} name="price" />
-      <input type="text" placeholder="cover" onChange={handleChange} name="cover" />
+      <input type="text" placeholder="title" onChange={handleChange} name="title" value={book.title || ""} />
+      <input type="text" placeholder="desc" onChange={handleChange} name="desc" value={book.desc || ""} />
+      <input type="number" placeholder="price" onChange={handleChange} name="price" value={book.price || ""} />
+      <input type="text" placeholder="cover" onChange={handleChange} name="cover" value={book.cover || ""} />
 
       <button className="formButton" onClick={handleClick}>Update</button>
     </div>

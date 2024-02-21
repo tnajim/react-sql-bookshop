@@ -40,6 +40,17 @@ app.post("/books", (req, res) => {
   })
 });
 
+app.get("/books/:id", (req, res) => {
+  const bookId = req.params.id;
+  db.query("SELECT * FROM books WHERE id = ?", [bookId], (err, result) => {
+    if (err) return res.json(err);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+    res.json(result[0]);
+  });
+});
+
 app.delete("/books/:id", (req, res) => {
   const bookId = req.params.id;
   const q = "DELETE FROM books WHERE id = ?";
