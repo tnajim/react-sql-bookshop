@@ -45,3 +45,24 @@ img {
   color: rgb(136, 119, 233);
   border-radius: 5px;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.formButton {
+  border: none;
+  padding: 10px;
+  background-color: rgb(42, 112, 218);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
