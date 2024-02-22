@@ -4,12 +4,16 @@ import mysql from "mysql";
 import cors from "cors";
 
 const app = express();
-var db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME
-});
+try {
+  const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DBNAME
+  });
+} catch (err) {
+  console.error("Error creating database connection:", err);
+}
 
 app.use(express.json());
 app.use(cors());
