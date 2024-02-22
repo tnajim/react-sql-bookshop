@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import API_URL from "../config";
 
 
 const Update = () => {
@@ -17,7 +18,7 @@ const Update = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/books/${id}`);
+        const response = await axios.get(`${API_URL}/books/${id}`);
         setBook(response.data);
       } catch (err) {
         console.error("Error fetching book:", err);
@@ -34,7 +35,7 @@ const Update = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.put("http://localhost:3000/books/" + id, book);
+      await axios.put(`${API_URL}/books/${id}`, book);
       navigate("/");
     } catch (err) {
       console.log(err)

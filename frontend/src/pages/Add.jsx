@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 
 const Add = () => {
@@ -20,7 +21,7 @@ const Add = () => {
   const handleClick = async e => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/books", book);
+      await axios.post(`${API_URL}/books`, book);
       navigate("/");
     } catch (err) {
       console.log(err)

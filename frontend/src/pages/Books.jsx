@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import API_URL from "../config";
 
 
 const Books = () => {
@@ -9,7 +10,7 @@ const Books = () => {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/books");
+        const res = await axios.get(`${API_URL}/books`);
         setbooks(res.data);
       } catch (err) {
         console.log(err);
@@ -20,7 +21,7 @@ const Books = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete("http://localhost:3000/books/" + id);
+      await axios.delete(`${API_URL}/books/${id}`);
       window.location.reload();
     } catch (err) {
       console.log(err)
