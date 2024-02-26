@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", function (req, res) {
-  res.send(`Hello World, ${process.env.DB_HOST}, ${process.env.DB_USERNAME}, ${process.env.DB_DBNAME}`);
+  res.send(`Hello World, ${process.env.DB_HOST || error}, ${process.env.DB_USERNAME || error}, ${process.env.DB_DBNAME || error}`);
 });
 
 app.get("/books", function (req, res) {
