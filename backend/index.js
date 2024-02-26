@@ -3,20 +3,15 @@ import express from "express";
 import mysql from "mysql";
 import cors from "cors";
 
-const app = express();
-const db = mysql.createConnection({
+const pool = mysql.createPool({
+  connectionLimit: 10,
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME
+  database: process.env.DB_DBNAME,
 });
 
-try {
-  db.connect();
-  console.log("Database connected");
-} catch (err) {
-  console.error("Error connecting to database:", err);
-}
+const app = express();
 
 app.use(express.json());
 app.use(cors());
@@ -27,7 +22,7 @@ app.get("/", function (req, res) {
 
 app.get("/books", function (req, res) {
   const q = "SELECT * FROM books";
-  db.query(q, (err, data) => {
+  pool.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   })
@@ -42,7 +37,7 @@ app.post("/books", (req, res) => {
     req.body.cover
   ];
 
-  db.query(q, [values], (err, data) => {
+  pool.query(q, [values], (err, data) => {
     if (err) return res.json(err);
     return res.json("Book has been created successfully.");
   })
@@ -50,7 +45,7 @@ app.post("/books", (req, res) => {
 
 app.get("/books/:id", (req, res) => {
   const bookId = req.params.id;
-  db.query("SELECT * FROM books WHERE id = ?", [bookId], (err, result) => {
+  pool.query("SELECT * FROM books WHERE id = ?", [bookId], (err, result) => {
     if (err) return res.json(err);
     if (result.length === 0) {
       return res.status(404).json({ error: "Book not found" });
@@ -63,7 +58,7 @@ app.delete("/books/:id", (req, res) => {
   const bookId = req.params.id;
   const q = "DELETE FROM books WHERE id = ?";
 
-  db.query(q, [bookId], (err, data) => {
+  pool.query(q, [bookId], (err, data) => {
     if (err) return res.json(err);
     return res.json("Book has been deleted successfully.");
   })
@@ -80,7 +75,7 @@ app.put("/books/:id", (req, res) => {
     req.body.cover,
   ];
 
-  db.query(q, [...values, bookId], (err, data) => {
+  pool.query(q, [...values, bookId], (err, data) => {
     if (err) return res.json(err);
     return res.json("Book has been updated successfully.");
   })
