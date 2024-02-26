@@ -4,15 +4,18 @@ import mysql from "mysql";
 import cors from "cors";
 
 const app = express();
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME
+});
+
 try {
-  const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DBNAME
-  });
+  db.connect();
+  console.log("Database connected");
 } catch (err) {
-  console.error("Error creating database connection:", err);
+  console.error("Error connecting to database:", err);
 }
 
 app.use(express.json());
@@ -84,5 +87,5 @@ app.put("/books/:id", (req, res) => {
 })
 
 app.listen(3000, () => {
-  console.log("Listening to localhost 3000...");
+  console.log(`Server running on port 3000`);
 });
