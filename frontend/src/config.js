@@ -1,2 +1,2 @@
-const API_URL = "https://react-sql-bookshop-api.onrender.com/";
+const API_URL = "https://react-sql-bookshop.onrender.com";
 export default API_URL;
